@@ -1,5 +1,7 @@
+// https://swapi.dev/
+
 function App() {
-  return <div className="App"></div>;
+  return <div className="App">This is a React App.</div>;
 }
 
 export default App;
