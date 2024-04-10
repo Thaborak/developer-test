@@ -1,0 +1,24 @@
+*** Senior Engineer Sample Test ***
+
+Use React and NodeJS to create an application that will do the following:
+
+- Allow user to authenticate into their Google account.
+- Using the obtained Google authentication, create a table that displays the list of files and folders in their Google Drive account.
+- The Google Authentication must be tracked and maintained on the backend.
+- This project includes some boilerplate for a NodeJS backend and a CRA React frontend.
+- - This has been provided for convenience, but you may use any other React stack or configuration your like.
+- The main goal here is to build a simple React application that allows a user to view their Google Drive files.
+
+- You don't have to use a database for this unless you want to - you can use a JSON file or other text files to persist data if you want.
+
+*** General Rules ***
+-- You may use any resources you like for this: Google Documentation, ChatGPT, StackOverflow, etc...
+-- No real deadline to complete, but try to get it back to us in about a week
+-- This is estimated to take 3 or less hours to complete.
+-- This is not a pass/fail test - think of it as a technical way to start a conversation about your skills and experience developing full stack applications.
+-- Get as close to completion as you can, but you don't have to fully complete this test to turn in a result.
+-- Let us know if you would like more time, but try to send your results over once you get to about 3 hours of work.
+
+*** Questions ***
+
+If you have any questions, please let us know at contact@monolithforensics.com.
