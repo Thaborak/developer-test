@@ -38,7 +38,7 @@ function saveTokens(tokens) {
 app.get("/auth/google", (req, res) => {
   const authUrl = oAuth2Client.generateAuthUrl({
     access_type: "offline",
-    scope: ["https://www.googleapis.com/auth/drive.metadata.readonly"],
+    scope: ["https://www.googleapis.com/auth/drive"],
   });
   res.redirect(authUrl);
 });
@@ -69,13 +69,106 @@ app.get("/files", async (req, res) => {
     const drive = google.drive({ version: "v3", auth: oAuth2Client });
     const result = await drive.files.list({
       pageSize: 10,
-      fields: "nextPageToken, files(id, name)",
+      fields:
+        "nextPageToken, files(id, name, mimeType, modifiedTime, size, owners, shared, webViewLink, thumbnailLink)",
     });
 
     res.json(result.data.files);
   } catch (error) {
     console.error("Failed to retrieve files", error);
     res.status(500).send("Failed to retrieve files");
+  }
+});
+
+// Route for file preview
+app.get("/files/preview/:fileId", async (req, res) => {
+  const tokens = getStoredTokens();
+  if (!tokens) {
+    return res.status(401).send("Authentication required.");
+  }
+  oAuth2Client.setCredentials(tokens);
+
+  const drive = google.drive({ version: "v3", auth: oAuth2Client });
+  try {
+    // Retrieve the file's metadata to get the webViewLink if it's a Google Doc
+    const fileMetadata = await drive.files.get({
+      fileId: req.params.fileId,
+      fields: "webViewLink, mimeType",
+    });
+
+    if (fileMetadata.data.mimeType.includes("google-apps")) {
+      // If it's a Google Doc, redirect to the webViewLink
+      res.redirect(fileMetadata.data.webViewLink);
+    } else {
+      // If it's not a Google Doc, try to stream the file content
+      const response = await drive.files.get(
+        {
+          fileId: req.params.fileId,
+          alt: "media",
+        },
+        {
+          responseType: "stream",
+        }
+      );
+
+      response.data
+        .on("end", () => {
+          console.log("Done streaming file.");
+        })
+        .on("error", (err) => {
+          console.error("Error streaming file.", err);
+          res.status(500).send("Error streaming file.");
+        })
+        .pipe(res);
+    }
+  } catch (error) {
+    console.error("Failed to retrieve file", error);
+    res.status(500).send("Failed to retrieve file");
+  }
+});
+
+// Route for file download
+app.get("/files/download/:fileId", async (req, res) => {
+  const tokens = getStoredTokens();
+  if (!tokens) {
+    return res.status(401).send("Authentication required.");
+  }
+  oAuth2Client.setCredentials(tokens);
+
+  const drive = google.drive({ version: "v3", auth: oAuth2Client });
+  try {
+    const fileMetadata = await drive.files.get({
+      fileId: req.params.fileId,
+      fields: "name, mimeType",
+    });
+
+    const response = await drive.files.get(
+      {
+        fileId: req.params.fileId,
+        alt: "media",
+      },
+      {
+        responseType: "stream",
+      }
+    );
+
+    // Set headers for download
+    res.setHeader(
+      "Content-Disposition",
+      'attachment; filename="' + fileMetadata.data.name + '"'
+    );
+    response.data
+      .on("end", () => {
+        console.log("Done downloading file.");
+      })
+      .on("error", (err) => {
+        console.error("Error downloading file.", err);
+        res.status(500).send("Error downloading file.");
+      })
+      .pipe(res);
+  } catch (error) {
+    console.error("Failed to download file", error);
+    res.status(500).send("Failed to download file");
   }
 });
 
