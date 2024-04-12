@@ -22,6 +22,11 @@ const StyledTableContainer = styled(TableContainer)`
   margin-right: auto;
 `;
 
+const Thumbnail = styled.img`
+  width: 50px;
+  height: auto;
+`;
+
 function FileList() {
   const [files, setFiles] = useState([]);
 
@@ -49,9 +54,10 @@ function FileList() {
 
   return (
     <StyledTableContainer component={Paper}>
-      <Table aria-label="simple table">
+      <Table aria-label="file list">
         <TableHead>
           <TableRow>
+            <TableCell>Preview</TableCell>
             <TableCell>File Name</TableCell>
             <TableCell align="right">Actions</TableCell>
           </TableRow>
@@ -60,6 +66,13 @@ function FileList() {
           {files.length > 0 ? (
             files.map((file) => (
               <TableRow key={file.id}>
+                <TableCell>
+                  {file.thumbnailLink ? (
+                    <Thumbnail src={file.thumbnailLink} alt={`${file.name} thumbnail`}  referrerpolicy="no-referrer"/>
+                  ) : (
+                    <Typography variant="body2">No Preview</Typography>
+                  )}
+                </TableCell>
                 <TableCell component="th" scope="row">
                   {file.name}
                 </TableCell>
@@ -75,7 +88,7 @@ function FileList() {
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={2}>
+              <TableCell colSpan={3}>
                 <Typography variant="body2" color="textSecondary" align="center">
                   No files found.
                 </Typography>
