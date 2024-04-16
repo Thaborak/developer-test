@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:3001"; // Define the base URL for your API
+const API_BASE_URL = process.env.REACT_API_BASE_URL || "http://localhost:3001"; // Define the base URL for your API
 
 const getFiles = async () => {
   const response = await axios.get(`${API_BASE_URL}/files`);

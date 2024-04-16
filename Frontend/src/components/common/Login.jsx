@@ -5,7 +5,10 @@ import { AuthContext } from "../../contexts/AuthContext";
 function Login() {
   const { login } = useContext(AuthContext);
   const handleLogin = () => {
-    window.location.href = "http://localhost:3001/google";
+    login("dummy-token");
+    window.location.href =
+      `${process.env.REACT_API_BASE_URL}/google` ||
+      "http://localhost:3001/google";
   };
 
   return (

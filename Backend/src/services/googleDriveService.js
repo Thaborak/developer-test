@@ -22,7 +22,10 @@ async function handleGoogleCallback(req, res) {
     console.error("Error retrieving access token", error);
     res.status(500).send("Authentication failed");
   }
-  res.redirect("http://localhost:3000/oauthcallback"); // Redirect to frontend files page
+  res.redirect(
+    `${process.env.REACT_BASE_URL}/oauthcallback` ||
+      "http://localhost:3000/oauthcallback"
+  ); // Redirect to frontend files page
 }
 
 // Get files from Google Drive
