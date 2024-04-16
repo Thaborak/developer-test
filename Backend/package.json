@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "test": "jest '**/*.test.js'",
+    "start": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",
@@ -15,5 +15,8 @@
     "express": "^4.18.2",
     "googleapis": "^134.0.0",
     "nodemon": "^2.0.22"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }

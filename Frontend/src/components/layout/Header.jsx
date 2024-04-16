@@ -4,7 +4,7 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-import logo from './drive-view.png'; 
+import logo from '../../assets/images/drive-view.png'; 
 
 const Logo = styled.img`
   height: 50px; // Set the height as needed

@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import Button from "@mui/material/Button";
+import { AuthContext } from "../../contexts/AuthContext";
 
 function Login() {
+  const { login } = useContext(AuthContext);
   const handleLogin = () => {
-    window.location.href = "http://localhost:3001/auth/google";
+    window.location.href = "http://localhost:3001/google";
   };
 
   return (

@@ -1,11 +1,13 @@
 import React from "react";
-import Header from "./Header";
+import Header from "./components/layout/Header";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./Login";
-import OAuthCallback from "./OAuthCallback";
-import FileList from "./FileList";
+import Login from "./components/common/Login";
+import Home from "./Home";
+import OAuthCallback from "./pages/OAuthCallback";
+import FileList from "./pages/FileList";
+import { AuthProvider } from "./contexts/AuthContext";
 
 const theme = createTheme({
   palette: {
@@ -26,27 +28,20 @@ const theme = createTheme({
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline /> {/* Normalize CSS */}
-      <Router>
-        <Header />
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/oauthcallback" element={<OAuthCallback />} />
-          <Route path="/files" element={<FileList />} />
-          <Route path="/" element={<Home />} />
-        </Routes>
-      </Router>
-    </ThemeProvider>
-  );
-}
-
-function Home() {
-  return (
-    <div style={{ padding: 20 }}>
-      <h1>Welcome to the Google Drive File Viewer App</h1>
-      <p>Please login to view your files.</p>
-    </div>
+    <AuthProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline /> {/* Normalize CSS */}
+        <Router>
+          <Header />
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/oauthcallback" element={<OAuthCallback />} />
+            <Route path="/files" element={<FileList />} />
+            <Route path="/" element={<Home />} />
+          </Routes>
+        </Router>
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
 
