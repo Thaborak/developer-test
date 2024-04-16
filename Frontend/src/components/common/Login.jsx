@@ -7,7 +7,7 @@ function Login() {
   const handleLogin = () => {
     login("dummy-token");
     window.location.href =
-      `${process.env.REACT_API_BASE_URL}/google` ||
+      `${process.env.REACT_APP_API_BASE_URL}/google` ||
       "http://localhost:3001/google";
   };
 
